@@ -2,12 +2,12 @@
   <div class="row">
     <div class="col-md-3">
       <h1>User info</h1>
-      <%= image_tag (@profile_image.present? ?  @profile_image: 'no_image.jpg') %>
+      <%= image_tag @user.get_profile_image(100,100) %>
         <table class = "table">
         <thead>
           <tr>
             <th class="header1">name</th>
-            <th class="header2"><% @name %></th>
+            <th class="header2"><%= @user.name %></th>
           </tr>
           <tr>
             <th class="header1">introduction</th>
@@ -46,15 +46,16 @@
           <% @books.each do |book| %>
             <tr>
               <td>
-                <%= image_tag(book.user.profile_image.present? ? book.user.profile_image : image_path('no_image.jpg')) %></br>
-                <%= link_to book.user.name, user_path(book.user.id) %>
+                <%= link_to user_path(@user.id) do %>
+                  <%= image_tag @user.profile_image, size: "100x100" %>
+                <% end %>
               </td>
-              <td><%= book.title %></td>
+              <td>
+                <%= link_to book_path(@user.id) do %>
+                  <%= book.title %>
+                <% end %>
+              </td>
               <td><%= book.body %></td>
-              <% if book.user == current_user %>
-                <td><%= link_to 'Edit', book_path(book.id) + "/edit", class:"btn btn-success btn-sm" %></td>
-                <td><%= link_to 'Destroy',book_path(book), method: :delete, "data-confirm" => "本当に消しますか？", class:"btn btn-danger btn-sm" %></td>
-              <% end %>
             </tr>
           <% end %>
         </tbody>
