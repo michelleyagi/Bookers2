@@ -2,25 +2,35 @@
   <div class="row">
     <div class="col-md-3">
       <h1>User info</h1>
-      <%= image_tag @user.get_profile_image(100,100) %>
+      <%= image_tag current_user.get_profile_image(100,100) %>
         <table class = "table">
         <thead>
           <tr>
             <th class="header1">name</th>
-            <th class="header2"><%= @user.name %></th>
+            <th class="header2"><%= current_user.name %></th>
           </tr>
           <tr>
             <th class="header1">introduction</th>
-            <th class="header2"><%= @introduction %></th>
+            <th class="header2"><%= current_user.introduction %></th>
           </tr>
         </thead>
       </table>
     <div class="row">
-        <%= button_to edit_user_path(current_user.id),class: "btn btn-light btn-block", method: :get do %>
+        <%= link_to edit_user_path(current_user.id),class: "btn btn-light btn-block", method: :get do %>
           <i class="fa-solid fa-user-gear"></i>
         <% end %>
     </div>
       <h1 class="mt-3">New book</h1>
+      
+      <% if @book.errors.any? %>
+        <h3><%= @book.errors.count %>errors prohibited this obj from being saved:</h3>
+        <ul>
+          <% @book.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      <% end %>
+      
         <%= form_with model: Book.new do |f| %>
           <h4>Title</h4>
             <%= f.text_field :title %>
@@ -43,19 +53,25 @@
           </tr>
         </thead>
         <tbody>
-          <% @books.each do |book| %>
+             <% @users.each do |user| %>
             <tr>
               <td>
-                <%= link_to user_path(@user.id) do %>
-                  <%= image_tag @user.profile_image, size: "100x100" %>
+                <%= link_to user_path(user.id) do %>
+                  <%= image_tag user.get_profile_image(100,100) %>
                 <% end %>
               </td>
               <td>
-                <%= link_to book_path(@user.id) do %>
-                  <%= book.title %>
+                <% if user.books.present? %>
+                  <%= link_to book_path(user.id) do %>
+                    <%= user.books.first.title %>
+                  <% end %>
                 <% end %>
               </td>
-              <td><%= book.body %></td>
+              <td>
+                <% if user.books.present? && user.books.first.body.present? %>
+                  <%= user.books.first.body %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>
