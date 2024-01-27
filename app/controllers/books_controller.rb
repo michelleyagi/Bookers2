@@ -7,31 +7,39 @@ class BooksController < ApplicationController
     @book = Book.new(book_params)
     @book.user_id = current_user.id
     if @book.save
-      redirect_to books_path
+      flash[:notice] = "You have created book successfully."
+      redirect_to book_path(@book)
     else
-      render :index
+      @users =User.all
+      render :index, status: :unprocessable_entity 
     end
   end
 
   def index
-    @user = current_user
-    @books = Book.all
-    @profile_image = @user.get_profile_image(100, 100)
-    @name = User.all
-    @introduction = current_user.introduction
+    @users = User.all
   end
 
   def show
-    @book = Book.all
-    if @book.save
-      redirect_to book_path
-    else
-      render :index
-    end
+    @book = Book.find(params[:id])
+    @books = Book.where(user_id: @book.user_id)
+    @user = @book.user
   end
   
   def edit
     @book = Book.find(params[:id])
+    @user = current_user
+    if @book.user != current_user
+      redirect_to books_path
+    end
+  end
+  
+  def update
+    @book= Book.find(params[:id])
+    if @book.update(book_params)
+      redirect_to @book
+    else
+      render :edit
+    end
   end
   
   def destroy
