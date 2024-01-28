@@ -1,4 +1,13 @@
 <h1>Editing Book</h1>
+  <% if @book.errors.any? %>
+    <h3><%= @book.errors.count %> errors prohibited this obj from being saved:</h3>
+
+    <ul>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
 
 <%= form_with model: @book do |f| %>
 
@@ -8,4 +17,24 @@
   <h4>Opinion</h4>
   <%= f.text_area :body %>
   
-  <%= f.submit 'Update Book' %>
+  <h4></h4>
+  <%= f.submit 'Update Book', class:"btn btn-success btn-lg" %>
+  
+  <table class = "table">
+    <thead>
+      <th></th>
+      <th></th>
+      <th></th>
+    </thead>
+    <tbody>
+      <td>
+        <%= link_to "Show", book_path %>
+      </td>
+      <td>|</td>
+      <td>
+        <%= link_to "Back", books_path %>
+      </td>
+    </tbody>
+  </table
+
+<% end %>

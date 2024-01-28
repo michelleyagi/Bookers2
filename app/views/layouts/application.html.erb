@@ -29,8 +29,8 @@
             <ul class="navbar-nav ml-auto">
               <% if user_signed_in? %>
                 <li class="nav-item">
-                  <%= link_to root_path do %>
-                  <i class="fa-solid fa-house text-light"></i>Home
+                  <%= link_to user_path(current_user) do %>
+                    <i class="fa-solid fa-house text-light"></i>Home
                   <% end %>
                 </li>
                 <li class="nav-item">
@@ -45,21 +45,29 @@
                 </li>
                 <li class="nav-item">
                   <%= link_to destroy_user_session_path, method: :delete do %>
-                  <i class="fa-solid fa-right-from-bracket"></i>Log out
+                    <i class="fa-solid fa-right-from-bracket"></i>Log out
                   <% end %>
                 </li>
               <% else %>
                 <li class="nav-item">
-                  <%= link_to "Home", root_path, class: 'nav-link text-light' %>
+                  <%= link_to root_path do %>
+                    <i class="fa-solid fa-house text-light"></i>Home
+                  <% end %>
                 </li>
                 <li class="nav-item">
-                  <%= link_to "About", about_path, class: 'nav-link text-light' %>
+                  <%= link_to about_path do %>
+                    <i class="fa-solid fa-link text-light"></i>About
+                  <% end %>
                 </li>
                 <li class="nav-item">
-                  <%= link_to "Sign up", new_user_registration_path, class: 'nav-link text-light' %>
+                  <%= link_to  new_user_registration_path do %>
+                    <i class="fa-solid fa-user-plus text-light"></i>Sign up
+                  <% end %>
                 </li>
                 <li class= "nav-item">
-                  <%= link_to "Log in", new_user_session_path, class: 'nav-link text-light' %>
+                  <%= link_to new_user_session_path do %>
+                    <i class="fa-solid fa-right-to-bracket text-light"></i>Log in
+                  <% end %>
                 </li>
               <% end %>
             </ul>

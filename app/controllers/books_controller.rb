@@ -1,4 +1,5 @@
 class BooksController < ApplicationController
+  
   def new
     @book = Book.new
   end
@@ -11,12 +12,14 @@ class BooksController < ApplicationController
       redirect_to book_path(@book)
     else
       @users =User.all
-      render :index, status: :unprocessable_entity 
+      render :index
     end
   end
 
   def index
     @users = User.all
+    @book = Book.new
+    @books = Book.all
   end
 
   def show
@@ -26,17 +29,13 @@ class BooksController < ApplicationController
   end
   
   def edit
-    @book = Book.find(params[:id])
-    @user = current_user
-    if @book.user != current_user
-      redirect_to books_path
-    end
+    @book=Book.find(params[:id])
   end
   
   def update
     @book= Book.find(params[:id])
     if @book.update(book_params)
-      redirect_to @book
+      redirect_to @book, notice: 'You have updated book successfully.'
     else
       render :edit
     end
@@ -53,6 +52,5 @@ class BooksController < ApplicationController
   def book_params
     params.require(:book).permit(:title, :body)
   end
-  
   
 end
